@@ -1,4 +1,4 @@
-// src/contexts/SocketContext.js
+// src/contexts/SocketContext.jsx
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import io from 'socket.io-client'
 
@@ -20,19 +20,16 @@ export const SocketProvider = ({ children }) => {
   const [connectionError, setConnectionError] = useState(null)
 
   useEffect(() => {
-    // Check if we're in development mode and backend is not running
+    // Always use mock data in development for now
     const isDevelopment = import.meta.env.DEV
     
-    // Only try to connect if we explicitly want real WebSocket
-    const shouldUseWebSocket = import.meta.env.VITE_USE_REAL_WEBSOCKET === 'true'
-    
-    if (!shouldUseWebSocket && isDevelopment) {
-      console.log('🔧 Development mode: Using mock data instead of WebSocket')
+    if (isDevelopment) {
+      console.log('🔧 Development mode: Using mock data')
       setupMockData()
       return
     }
 
-    // Real WebSocket connection
+    // Only attempt real connection in production
     const socketUrl = import.meta.env.VITE_WS_URL || 'http://localhost:8000'
     
     console.log('Attempting to connect to WebSocket:', socketUrl)
@@ -43,7 +40,6 @@ export const SocketProvider = ({ children }) => {
         timeout: 5000,
         reconnectionAttempts: 3,
         reconnectionDelay: 1000,
-        autoConnect: true
       })
 
       newSocket.on('connect', () => {
@@ -56,12 +52,6 @@ export const SocketProvider = ({ children }) => {
         console.log('❌ Disconnected from WebSocket:', reason)
         setIsConnected(false)
         setConnectionError(`Disconnected: ${reason}`)
-        
-        // Fallback to mock data if disconnected
-        if (isDevelopment) {
-          console.log('🔄 Falling back to mock data')
-          setupMockData()
-        }
       })
 
       newSocket.on('connect_error', (error) => {
@@ -69,11 +59,9 @@ export const SocketProvider = ({ children }) => {
         setIsConnected(false)
         setConnectionError(`Connection failed: ${error.message}`)
         
-        // Fallback to mock data on connection error
-        if (isDevelopment) {
-          console.log('🔄 Falling back to mock data due to connection error')
-          setupMockData()
-        }
+        // Fallback to mock data
+        console.log('🔄 Falling back to mock data due to connection error')
+        setupMockData()
       })
 
       newSocket.on('sensor_data', (data) => {
@@ -90,10 +78,6 @@ export const SocketProvider = ({ children }) => {
       newSocket.on('anomaly_detected', (data) => {
         console.log('Anomaly detected:', data)
         setAnomalies(prev => [data.data, ...prev.slice(0, 49)])
-      })
-
-      newSocket.on('fault_injected', (data) => {
-        console.log('Fault injected:', data)
       })
 
       setSocket(newSocket)
@@ -149,6 +133,7 @@ export const SocketProvider = ({ children }) => {
     }
 
     setSensorData(initialMockData)
+    setIsConnected(true) // Mock connection as connected
 
     // Simulate real-time updates
     const mockInterval = setInterval(() => {

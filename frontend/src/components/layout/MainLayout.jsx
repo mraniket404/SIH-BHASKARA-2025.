@@ -37,7 +37,6 @@ const MainLayout = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header onMenuClick={() => setSidebarOpen(true)} />
         
-        {/* Main content area with proper text colors */}
         <main className="flex-1 overflow-auto">
           <div className="min-h-full bg-gray-50">
             <Outlet />

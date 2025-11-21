@@ -19,10 +19,20 @@ import Register from './pages/Users/Register'
 import RoleManager from './pages/Users/RoleManager'
 import Profile from './pages/Users/Profile'
 
+// Router configuration with future flags
+const routerConfig = {
+  future: {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+    v7_fetcherPersist: true,
+    v7_normalizeFormMethod: true,
+  },
+}
+
 function App() {
   return (
     <SocketProvider>
-      <Router>
+      <Router future={routerConfig.future}>
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
@@ -44,7 +54,14 @@ function App() {
           </Route>
           
           {/* 404 Fallback */}
-          <Route path="*" element={<div>Page Not Found</div>} />
+          <Route path="*" element={
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+              <div className="text-center">
+                <h1 className="text-2xl font-bold text-gray-900 mb-2">404 - Page Not Found</h1>
+                <p className="text-gray-600">The requested page could not be found.</p>
+              </div>
+            </div>
+          } />
         </Routes>
       </Router>
     </SocketProvider>
