@@ -1,3 +1,4 @@
+// src/pages/Settings/Settings.jsx
 import React, { useState } from 'react'
 import SCADAConfig from './SCADAConfig'
 import IoTConfig from './IoTConfig'
@@ -53,4 +54,5 @@ const Settings = () => {
   )
 }
 
+export { Settings }
 export default Settings
