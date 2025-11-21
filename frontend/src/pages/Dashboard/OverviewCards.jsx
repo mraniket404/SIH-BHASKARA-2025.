@@ -20,31 +20,34 @@ const OverviewCards = () => {
 
   const cards = [
     {
-      title: 'Bus Voltage',
+      title: '400kV Bus Voltage',
       value: `${getLatestValue('BUS_400_1', 'voltage').toFixed(1)} kV`,
       icon: Zap,
       status: getLatestValue('BUS_400_1', 'voltage') > 420 ? 'warning' : 'normal',
       change: '+0.2%',
       trend: 'up',
-      color: 'from-blue-500 to-cyan-500'
+      standard: '400 kV ±5%',
+      color: 'blue'
     },
     {
-      title: 'Transformer Temp',
+      title: 'Transformer Temperature',
       value: `${getLatestValue('XFMR_400_1', 'temperature').toFixed(1)} °C`,
       icon: Thermometer,
       status: getLatestValue('XFMR_400_1', 'temperature') > 85 ? 'critical' : 'normal',
       change: '+1.5°C',
       trend: 'up',
-      color: 'from-orange-500 to-red-500'
+      standard: 'Max: 85°C',
+      color: 'orange'
     },
     {
-      title: 'Line Current',
-      value: `${getLatestValue('LINE_400_1', 'current').toFixed(1)} A`,
+      title: 'Line Current Load',
+      value: `${getLatestValue('LINE_400_1', 'current').toFixed(0)} A`,
       icon: Activity,
       status: 'normal',
       change: '-0.3%',
       trend: 'down',
-      color: 'from-green-500 to-emerald-500'
+      standard: 'Capacity: 2000A',
+      color: 'green'
     },
     {
       title: 'System Frequency',
@@ -53,64 +56,77 @@ const OverviewCards = () => {
       status: 'normal',
       change: '0.0%',
       trend: 'stable',
-      color: 'from-purple-500 to-pink-500'
+      standard: '50.00 Hz ±0.5',
+      color: 'purple'
     }
   ]
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'critical': return 'bg-gradient-to-r from-red-100 to-pink-100 text-red-700 animate-pulse'
-      case 'warning': return 'bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700'
-      default: return 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700'
+  const getTrendIcon = (trend) => {
+    switch (trend) {
+      case 'up': return <TrendingUp className="h-4 w-4 text-green-600" />
+      case 'down': return <TrendingDown className="h-4 w-4 text-red-600" />
+      default: return <div className="h-4 w-4 bg-gray-400 rounded-full" />
     }
   }
 
-  const getTrendIcon = (trend) => {
-    switch (trend) {
-      case 'up': return <TrendingUp className="h-4 w-4 text-green-500 animate-float" />
-      case 'down': return <TrendingDown className="h-4 w-4 text-red-500 animate-bounce" />
-      default: return <div className="h-4 w-4 bg-gray-300 rounded-full animate-pulse" />
+  const getColorClasses = (color) => {
+    switch (color) {
+      case 'blue': return 'bg-blue-100 text-blue-600'
+      case 'orange': return 'bg-orange-100 text-orange-600'
+      case 'green': return 'bg-green-100 text-green-600'
+      case 'purple': return 'bg-purple-100 text-purple-600'
+      default: return 'bg-gray-100 text-gray-600'
     }
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-animate">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {cards.map((card, index) => (
         <div 
           key={index} 
-          className="card group hover:scale-105 transition-all duration-500 cursor-pointer"
-          style={{animationDelay: `${index * 0.1}s`}}
+          className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow duration-300"
         >
-          <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <p className="text-sm font-medium text-gray-600 mb-2">{card.title}</p>
-              <p className="text-2xl font-bold text-gray-900 mb-2">{card.value}</p>
+          <div className="flex items-start justify-between mb-3">
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 mb-1">{card.title}</h3>
+              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                {card.standard}
+              </span>
+            </div>
+            <div className={`p-2 rounded-lg ${getColorClasses(card.color)}`}>
+              <card.icon className="h-4 w-4" />
+            </div>
+          </div>
+          
+          <div className="flex items-end justify-between">
+            <div>
+              <p className="text-2xl font-bold text-gray-900 mb-1">{card.value}</p>
               <div className="flex items-center space-x-2">
                 {getTrendIcon(card.trend)}
-                <p className={`text-sm font-medium ${
+                <span className={`text-sm font-medium ${
                   card.trend === 'up' ? 'text-green-600' : 
                   card.trend === 'down' ? 'text-red-600' : 'text-gray-600'
                 }`}>
                   {card.change}
-                </p>
+                </span>
               </div>
-            </div>
-            <div className={`p-3 rounded-2xl bg-gradient-to-r ${card.color} text-white transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300`}>
-              <card.icon className="h-6 w-6" />
             </div>
           </div>
           
           {card.status !== 'normal' && (
-            <div className="flex items-center mt-4 p-2 rounded-lg animate-pulse">
-              <AlertTriangle className="h-4 w-4 text-red-500 mr-2 animate-bounce" />
-              <span className={`text-sm font-medium px-2 py-1 rounded-full ${getStatusColor(card.status)}`}>
-                {card.status === 'critical' ? 'Critical' : 'Warning'}
+            <div className={`flex items-center mt-3 p-2 rounded border-l-4 ${
+              card.status === 'critical' ? 'border-red-500 bg-red-50' : 'border-amber-500 bg-amber-50'
+            }`}>
+              <AlertTriangle className={`h-4 w-4 ${
+                card.status === 'critical' ? 'text-red-500' : 'text-amber-500'
+              } mr-2`} />
+              <span className={`text-sm font-semibold ${
+                card.status === 'critical' ? 'text-red-700' : 'text-amber-700'
+              }`}>
+                {card.status === 'critical' ? 'CRITICAL ALERT' : 'WARNING'}
               </span>
             </div>
           )}
-
-          {/* Animated background effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 opacity-20 pointer-events-none"></div>
         </div>
       ))}
     </div>

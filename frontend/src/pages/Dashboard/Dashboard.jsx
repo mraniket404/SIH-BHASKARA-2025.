@@ -10,54 +10,84 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Simulate loading
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 1000)
+    }, 800)
     return () => clearTimeout(timer)
   }, [])
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="loading-dots text-4xl mb-4">
+          <div className="loading-dots text-3xl mb-4">
             <div></div>
             <div></div>
             <div></div>
           </div>
-          <p className="text-gray-600 animate-pulse">Loading Dashboard...</p>
+          <p className="text-gray-600 font-medium">Initializing Grid Monitoring System...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent animate-slide-in">
-            Dashboard
-          </h1>
-          <p className="text-gray-600 mt-2 animate-slide-in" style={{animationDelay: '0.1s'}}>
-            EHV 400/220 kV Substation Monitoring
-          </p>
-        </div>
-        <div className="text-sm text-gray-500 animate-slide-in" style={{animationDelay: '0.2s'}}>
-          Real-time Overview
+    <div className="space-y-6 p-6">
+      {/* Header Section - Text visibility ensured */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Grid Operations Dashboard
+            </h1>
+            <p className="text-lg text-gray-600">
+              400/220 kV Transmission Substation - Real-time Monitoring
+            </p>
+          </div>
+          <div className="text-sm bg-green-50 text-green-700 px-4 py-2 rounded border border-green-200">
+            <span className="font-semibold">System Status:</span> OPERATIONAL
+          </div>
         </div>
       </div>
 
-      <div className="stagger-animate">
+      {/* Overview Cards */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Key Performance Indicators</h2>
         <OverviewCards />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-          <div className="lg:col-span-2">
+      </div>
+
+      {/* Charts and Alerts Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Real-time Grid Parameters</h2>
             <RealTimeCharts />
           </div>
-          
-          <div>
-            <WarningAlerts anomalies={anomalies.slice(0, 10)} />
+        </div>
+        
+        <div>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Active Alerts</h2>
+            <WarningAlerts anomalies={anomalies.slice(0, 8)} />
+          </div>
+        </div>
+      </div>
+
+      {/* Additional Info Section */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Grid Station Information</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+          <div className="text-center p-4 bg-blue-50 rounded border border-blue-200">
+            <div className="text-2xl font-bold text-blue-700 mb-1">400/220 kV</div>
+            <div className="text-gray-600">Transformation Capacity</div>
+          </div>
+          <div className="text-center p-4 bg-green-50 rounded border border-green-200">
+            <div className="text-2xl font-bold text-green-700 mb-1">24/7</div>
+            <div className="text-gray-600">Operational Hours</div>
+          </div>
+          <div className="text-center p-4 bg-purple-50 rounded border border-purple-200">
+            <div className="text-2xl font-bold text-purple-700 mb-1">99.8%</div>
+            <div className="text-gray-600">System Availability</div>
           </div>
         </div>
       </div>

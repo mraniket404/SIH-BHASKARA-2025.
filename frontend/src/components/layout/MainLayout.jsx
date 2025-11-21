@@ -9,7 +9,6 @@ const MainLayout = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Simulate initial loading
     const timer = setTimeout(() => {
       setIsLoading(false)
     }, 500)
@@ -18,32 +17,31 @@ const MainLayout = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-blue-50 to-purple-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-float">
-            <div className="loading-dots text-white text-2xl">
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
+          <div className="loading-dots text-3xl mb-4">
+            <div></div>
+            <div></div>
+            <div></div>
           </div>
-          <p className="text-gray-600 font-medium animate-pulse">
-            Loading EHV Digital Twin...
-          </p>
+          <p className="text-gray-600 font-medium">Loading Grid Control System...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-white via-blue-50 to-purple-50 overflow-hidden">
+    <div className="flex h-screen bg-gray-50">
       <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
       
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header onMenuClick={() => setSidebarOpen(true)} />
         
-        <main className="flex-1 overflow-auto p-6 animate-fade-in">
-          <Outlet />
+        {/* Main content area with proper text colors */}
+        <main className="flex-1 overflow-auto">
+          <div className="min-h-full bg-gray-50">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
