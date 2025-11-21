@@ -40,9 +40,9 @@ const Sidebar = ({ open, setOpen }) => {
               <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <Zap className="h-4 w-4 text-white animate-pulse" />
               </div>
-              <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <a href="/"><h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 EHV Digital Twin
-              </h1>
+              </h1></a>
             </div>
             <button 
               onClick={() => setOpen(false)}
