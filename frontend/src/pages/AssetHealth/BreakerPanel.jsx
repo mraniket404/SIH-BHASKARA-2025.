@@ -1,7 +1,7 @@
 import React from 'react'
 import BreakerHealthCard from '../../components/health/BreakerHealthCard'
 
-const BreakerPanel = () => {
+const BreakerPanel = ({ onViewDetails, onMaintenanceLog }) => {
   const breakers = [
     {
       id: 'BREAKER_400_1',
@@ -71,6 +71,8 @@ const BreakerPanel = () => {
         <BreakerHealthCard
           key={breaker.id}
           {...breaker}
+          onViewDetails={onViewDetails}
+          onMaintenanceLog={onMaintenanceLog}
         />
       ))}
     </div>

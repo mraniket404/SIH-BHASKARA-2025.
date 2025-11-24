@@ -9,7 +9,9 @@ const CTHealthCard = ({
   accuracy, 
   year, 
   healthScore, 
-  parameters 
+  parameters,
+  onViewDetails,
+  onMaintenanceLog
 }) => {
   const getStatus = (score) => {
     if (score >= 85) return 'operational'
@@ -22,6 +24,24 @@ const CTHealthCard = ({
     insulation: Shield,
     burden: Activity,
     thermal: Thermometer
+  }
+
+  const handleViewDetails = () => {
+    if (onViewDetails) {
+      onViewDetails({ id, name, ratio, accuracy, healthScore })
+    } else {
+      console.log('View details for CT:', { id, name })
+      alert(`Viewing details for ${name} (${id})`)
+    }
+  }
+
+  const handleMaintenanceLog = () => {
+    if (onMaintenanceLog) {
+      onMaintenanceLog({ id, name })
+    } else {
+      console.log('Maintenance log for CT:', { id, name })
+      alert(`Opening maintenance log for ${name}`)
+    }
   }
 
   return (
@@ -82,6 +102,22 @@ const CTHealthCard = ({
             </div>
           )
         })}
+      </div>
+
+      {/* Added buttons section */}
+      <div className="flex space-x-2 mt-4">
+        <button 
+          className="btn-primary text-sm flex-1"
+          onClick={handleViewDetails}
+        >
+          View Details
+        </button>
+        <button 
+          className="btn-secondary text-sm flex-1"
+          onClick={handleMaintenanceLog}
+        >
+          Maintenance Log
+        </button>
       </div>
 
       {parameters.accuracy < 85 && (

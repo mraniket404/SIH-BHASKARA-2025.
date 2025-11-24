@@ -7,7 +7,9 @@ const LineHealthCard = ({
   name, 
   healthScore, 
   length, 
-  capacity 
+  capacity,
+  onViewDetails,
+  onMaintenanceLog
 }) => {
   const getStatus = (score) => {
     if (score >= 85) return 'operational'
@@ -22,6 +24,26 @@ const LineHealthCard = ({
     { name: 'Insulation', value: 85 },
     { name: 'Thermal Rating', value: 90 }
   ]
+
+  const handleViewDetails = () => {
+    if (onViewDetails) {
+      onViewDetails({ assetId, name, healthScore, length, capacity })
+    } else {
+      console.log('View details for:', { assetId, name, healthScore, length, capacity })
+      // Default behavior - you can replace with modal or navigation
+      alert(`Viewing details for ${name} (${assetId})`)
+    }
+  }
+
+  const handleMaintenanceLog = () => {
+    if (onMaintenanceLog) {
+      onMaintenanceLog({ assetId, name })
+    } else {
+      console.log('Maintenance log for:', { assetId, name })
+      // Default behavior
+      alert(`Opening maintenance log for ${name}`)
+    }
+  }
 
   return (
     <div className="card">
@@ -68,10 +90,16 @@ const LineHealthCard = ({
       </div>
 
       <div className="flex space-x-2">
-        <button className="btn-primary text-sm flex-1">
+        <button 
+          className="btn-primary text-sm flex-1"
+          onClick={handleViewDetails}
+        >
           View Details
         </button>
-        <button className="btn-secondary text-sm flex-1">
+        <button 
+          className="btn-secondary text-sm flex-1"
+          onClick={handleMaintenanceLog}
+        >
           Maintenance Log
         </button>
       </div>

@@ -10,7 +10,9 @@ const BreakerHealthCard = ({
   year, 
   healthScore, 
   operations, 
-  parameters 
+  parameters,
+  onViewDetails,
+  onMaintenanceLog
 }) => {
   const getStatus = (score) => {
     if (score >= 85) return 'operational'
@@ -23,6 +25,24 @@ const BreakerHealthCard = ({
     gasPressure: Activity,
     mechanism: Settings,
     insulation: Shield
+  }
+
+  const handleViewDetails = () => {
+    if (onViewDetails) {
+      onViewDetails({ id, name, type, healthScore, operations })
+    } else {
+      console.log('View details for breaker:', { id, name })
+      alert(`Viewing details for ${name} (${id})`)
+    }
+  }
+
+  const handleMaintenanceLog = () => {
+    if (onMaintenanceLog) {
+      onMaintenanceLog({ id, name })
+    } else {
+      console.log('Maintenance log for breaker:', { id, name })
+      alert(`Opening maintenance log for ${name}`)
+    }
   }
 
   return (
@@ -85,11 +105,27 @@ const BreakerHealthCard = ({
         })}
       </div>
 
+      {/* Added buttons section */}
+      <div className="flex space-x-2 mt-4">
+        <button 
+          className="btn-primary text-sm flex-1"
+          onClick={handleViewDetails}
+        >
+          View Details
+        </button>
+        <button 
+          className="btn-secondary text-sm flex-1"
+          onClick={handleMaintenanceLog}
+        >
+          Maintenance Log
+        </button>
+      </div>
+
       {operations > 2000 && (
         <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-sm text-blue-800">
             <strong>High Usage:</strong> Consider maintenance after {2500 - operations} operations
-          </p>
+          </p> 
         </div>
       )}
     </div>

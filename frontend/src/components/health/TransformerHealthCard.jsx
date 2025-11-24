@@ -9,7 +9,9 @@ const TransformerHealthCard = ({
   cooling, 
   year, 
   healthScore, 
-  parameters 
+  parameters,
+  onViewDetails,
+  onMaintenanceLog
 }) => {
   const getStatus = (score) => {
     if (score >= 85) return 'operational'
@@ -31,6 +33,24 @@ const TransformerHealthCard = ({
     windingCondition: '#f59e0b',
     bushingCondition: '#10b981',
     loadFactor: '#8b5cf6'
+  }
+
+  const handleViewDetails = () => {
+    if (onViewDetails) {
+      onViewDetails({ id, name, mvaRating, healthScore })
+    } else {
+      console.log('View details for transformer:', { id, name })
+      alert(`Viewing details for ${name} (${id})`)
+    }
+  }
+
+  const handleMaintenanceLog = () => {
+    if (onMaintenanceLog) {
+      onMaintenanceLog({ id, name })
+    } else {
+      console.log('Maintenance log for transformer:', { id, name })
+      alert(`Opening maintenance log for ${name}`)
+    }
   }
 
   return (
@@ -91,6 +111,22 @@ const TransformerHealthCard = ({
             </div>
           )
         })}
+      </div>
+
+      {/* Added buttons section */}
+      <div className="flex space-x-2 mt-4">
+        <button 
+          className="btn-primary text-sm flex-1"
+          onClick={handleViewDetails}
+        >
+          View Details
+        </button>
+        <button 
+          className="btn-secondary text-sm flex-1"
+          onClick={handleMaintenanceLog}
+        >
+          Maintenance Log
+        </button>
       </div>
 
       {healthScore < 80 && (

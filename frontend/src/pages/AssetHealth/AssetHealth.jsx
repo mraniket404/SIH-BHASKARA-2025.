@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import TransformerPanel from './TransformerPanel'
 import BreakerPanel from './BreakerPanel'
 import CTPanels from './CTPanels'
@@ -6,6 +7,7 @@ import LineHealthCard from '../../components/health/LineHealthCard'
 
 const AssetHealth = () => {
   const [activeTab, setActiveTab] = useState('transformers')
+  const navigate = useNavigate()
 
   const tabs = [
     { id: 'transformers', name: 'Transformers' },
@@ -13,6 +15,17 @@ const AssetHealth = () => {
     { id: 'cts', name: 'Current Transformers' },
     { id: 'lines', name: 'Transmission Lines' },
   ]
+
+  // Navigation handlers
+  const handleViewDetails = (asset) => {
+    console.log('Viewing details for:', asset)
+    navigate('/asset-details', { state: { asset } })
+  }
+
+  const handleMaintenanceLog = (asset) => {
+    console.log('Opening maintenance log for:', asset)
+    navigate('/maintenance-log', { state: { asset } })
+  }
 
   return (
     <div className="space-y-6">
@@ -44,9 +57,24 @@ const AssetHealth = () => {
 
       {/* Tab Content */}
       <div>
-        {activeTab === 'transformers' && <TransformerPanel />}
-        {activeTab === 'breakers' && <BreakerPanel />}
-        {activeTab === 'cts' && <CTPanels />}
+        {activeTab === 'transformers' && (
+          <TransformerPanel 
+            onViewDetails={handleViewDetails}
+            onMaintenanceLog={handleMaintenanceLog}
+          />
+        )}
+        {activeTab === 'breakers' && (
+          <BreakerPanel 
+            onViewDetails={handleViewDetails}
+            onMaintenanceLog={handleMaintenanceLog}
+          />
+        )}
+        {activeTab === 'cts' && (
+          <CTPanels 
+            onViewDetails={handleViewDetails}
+            onMaintenanceLog={handleMaintenanceLog}
+          />
+        )}
         {activeTab === 'lines' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <LineHealthCard 
@@ -55,6 +83,8 @@ const AssetHealth = () => {
               healthScore={88}
               length="150 km"
               capacity="2000 A"
+              onViewDetails={handleViewDetails}
+              onMaintenanceLog={handleMaintenanceLog}
             />
             <LineHealthCard 
               assetId="LINE_400_2"
@@ -62,6 +92,8 @@ const AssetHealth = () => {
               healthScore={92}
               length="120 km"
               capacity="2000 A"
+              onViewDetails={handleViewDetails}
+              onMaintenanceLog={handleMaintenanceLog}
             />
             <LineHealthCard 
               assetId="LINE_220_1"
@@ -69,6 +101,8 @@ const AssetHealth = () => {
               healthScore={76}
               length="80 km"
               capacity="1500 A"
+              onViewDetails={handleViewDetails}
+              onMaintenanceLog={handleMaintenanceLog}
             />
             <LineHealthCard 
               assetId="LINE_220_2"
@@ -76,6 +110,8 @@ const AssetHealth = () => {
               healthScore={85}
               length="95 km"
               capacity="1500 A"
+              onViewDetails={handleViewDetails}
+              onMaintenanceLog={handleMaintenanceLog}
             />
           </div>
         )}

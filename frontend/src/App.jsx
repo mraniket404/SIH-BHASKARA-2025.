@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { SocketProvider } from './contexts/SocketContext'
@@ -18,6 +17,10 @@ import Login from './pages/Users/Login'
 import Register from './pages/Users/Register'
 import RoleManager from './pages/Users/RoleManager'
 import Profile from './pages/Users/Profile'
+
+// NEW PAGES - Add these imports
+import AssetDetails from './pages/AssetDetails/AssetDetails'
+import MaintenanceLog from './pages/MaintenanceLog/MaintenanceLog'
 
 // Router configuration with future flags
 const routerConfig = {
@@ -44,6 +47,11 @@ function App() {
             <Route path="monitoring" element={<Monitoring />} />
             <Route path="digital-twin" element={<DigitalTwin />} />
             <Route path="asset-health" element={<AssetHealth />} />
+            
+            {/* NEW ROUTES - Add these */}
+            <Route path="asset-details" element={<AssetDetails />} />
+            <Route path="maintenance-log" element={<MaintenanceLog />} />
+            
             <Route path="ai-analytics" element={<AIAnalytics />} />
             <Route path="simulator" element={<Simulator />} />
             <Route path="fault-simulator" element={<FaultSimulator />} />

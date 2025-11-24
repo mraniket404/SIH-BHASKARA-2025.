@@ -1,7 +1,7 @@
 import React from 'react'
 import TransformerHealthCard from '../../components/health/TransformerHealthCard'
 
-const TransformerPanel = () => {
+const TransformerPanel = ({ onViewDetails, onMaintenanceLog }) => {
   const transformers = [
     {
       id: 'XFMR_400_1',
@@ -71,6 +71,8 @@ const TransformerPanel = () => {
         <TransformerHealthCard
           key={transformer.id}
           {...transformer}
+          onViewDetails={onViewDetails}
+          onMaintenanceLog={onMaintenanceLog}
         />
       ))}
     </div>

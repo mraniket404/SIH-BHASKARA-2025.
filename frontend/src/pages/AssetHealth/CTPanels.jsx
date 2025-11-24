@@ -1,7 +1,7 @@
 import React from 'react'
 import CTHealthCard from '../../components/health/CTHealthCard'
 
-const CTPanels = () => {
+const CTPanels = ({ onViewDetails, onMaintenanceLog }) => {
   const currentTransformers = [
     {
       id: 'CT_400_1',
@@ -67,6 +67,8 @@ const CTPanels = () => {
         <CTHealthCard
           key={ct.id}
           {...ct}
+          onViewDetails={onViewDetails}
+          onMaintenanceLog={onMaintenanceLog}
         />
       ))}
     </div>
